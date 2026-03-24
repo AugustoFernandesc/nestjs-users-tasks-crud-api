@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, ForeignKey } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, ForeignKey, DeleteDateColumn } from "typeorm";
 import { User } from "../../users/entities/user.entity"; // Importe o User
 
 @Entity()
@@ -23,4 +23,7 @@ export class Task {
 
     @ManyToOne(() => User, (user) => user.tasks)
     user: User;
+
+    @DeleteDateColumn()
+    deletedAt: Date;
 }

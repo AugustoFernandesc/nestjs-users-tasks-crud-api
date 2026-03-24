@@ -1,19 +1,27 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Task } from "src/tasks/entities/task.entity";
 
 @Entity()
 export class User {
+  
   @PrimaryGeneratedColumn()
   id: number;
+  
   @Column()
-  nome: string;
+  name: string;
+  
   @Column({ unique: true })
   email: string;
+  
   @Column()
   isActive: boolean;
+  
   @CreateDateColumn()
   createdAt: Date;
 
   @OneToMany(() => Task, (task) => task.user)
-    tasks: Task[];
+  tasks: Task[];
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

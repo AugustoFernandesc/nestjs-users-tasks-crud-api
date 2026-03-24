@@ -1,4 +1,4 @@
-import { useEffect, useState, type HTMLElementType } from 'react'
+import { useEffect, useState} from 'react'
 import { api } from '../Services/api';
 
 
@@ -7,7 +7,6 @@ interface User{
     name:string;
     email:string;
     isActive:boolean;
-    createdAt:Date;
 }
 
 
@@ -16,7 +15,7 @@ function Users() {
   const [id, setId] = useState<number | null> (null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const [createdAt, setCreatedAt] = useState(new Date())
 
 
@@ -27,17 +26,17 @@ function Users() {
   
   useEffect(()=> {getUser()}, []);
 
-  async function updateUser(u: React.FormEvent<HTMLElementType>){
+  async function updateUser(u: React.FormEvent<HTMLFormElement>){
       u.preventDefault();
       const dados = {name, email, isActive, createdAt};
       if(id){
-        await api.patch(`/users/${id}`, dados);
+        await api.put(`/users/${id}`, dados);
       }else{
         await api.post('/users', dados);
       }
 
       clear()
-      getUser();
+      getUser()
   }
 
    function edition(e:User) {
@@ -45,7 +44,6 @@ function Users() {
     setName(e.name);
     setEmail(e.email);
     setIsActive(e.isActive);
-    setCreatedAt(e.createdAt);
   }
 
    function clear() {
@@ -78,11 +76,12 @@ function Users() {
     
         {users.map(u => (
           <div key={u.id}>
-            <div onClick={() => edition(u)}>
+            <div> 
               <strong>{u.name}</strong>
               <p>{u.email}</p>
             </div>
-            <button onClick={() => deletar(u.id)}>X</button>
+            <button onClick={() => deletar(u.id)}>Apagar Usuario</button>
+            <button onClick={() => edition(u)}>Editar</button>
           </div>
         ))}
       </div> 

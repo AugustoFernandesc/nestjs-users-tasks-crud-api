@@ -16,14 +16,15 @@ export class TasksService {
     private readonly userRepository: Repository<User>
   ){}
 
-
+  //alterado
   async create(createTaskDto: CreateTaskDto) {
     const user = await this.userRepository.findOne({where:{id: createTaskDto.userId}});
     if(!user){
       throw new NotFoundException(`Usuario nao encontrado`)
     }
     const newTask = this.taskRepository.create({...createTaskDto, user});
-    return await this.taskRepository.save(newTask);
+    await this.taskRepository.save(newTask);
+    return `Tarefa '${createTaskDto.title}'selecionada com sucesso`;
   }
 
   async findAll() {
@@ -55,7 +56,7 @@ export class TasksService {
     if(!task){
         throw new NotFoundException(`Task com ID ${id} nao encontrado`)
     }else{
-      await this.taskRepository.delete(id);
+      await this.taskRepository.softDelete(id);
       return {message: `Task com titulo: '${task.title}' exlcuida`}
     }
   }

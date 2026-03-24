@@ -1,6 +1,5 @@
-import { useEffect, useState, type HTMLElementType } from "react";
+import { useEffect, useState,} from "react";
 import { api } from "../Services/api";
-
 
 
 interface Task{
@@ -12,23 +11,40 @@ interface Task{
   createdAt:Date;
 }
 
+interface User{
+  id:number;
+  name:string;
+  email:string
+}
+
 
 function Task() {
 
   const [tasks, setTasks] = useState<Task[]> ([]);
+  const [users, setUsers] = useState<User[]> ([])
+
   const [id, setId] = useState<number | null> (null);
   const [title, setTitle] = useState("");
   const [description, setDesciption] = useState("");
   const [completed, setCompleted] = useState(false);
-  const [userId, setUserId] = useState<number | null> (null);
+  const [userId, setUserId] = useState<number | ""> ("");
   const [createdAt, setCreatedAt] = useState(new Date())
+  
 
     async function getTask() {
     const res = await api.get('/tasks');
     setTasks(res.data);
     }
 
-    useEffect(()=> {getTask()}, []);
+    async function getUser(){
+    const res = await api.get('/users');
+    setUsers(res.data);
+    }
+
+    useEffect(()=> {
+      getTask();
+      getUser();},
+      []);
 
     async function updateTask(u: React.FormEvent<HTMLFormElement>){
       u.preventDefault();
@@ -40,7 +56,7 @@ function Task() {
       }
 
       clear()
-      getTask();
+      getTask()
   }
 
    function edition(e:Task) {
@@ -57,7 +73,7 @@ function Task() {
     setTitle("");
     setDesciption("");
     setCompleted(false);
-    setUserId(null);
+    setUserId("");
     setCreatedAt(new Date());
   }
 
@@ -73,8 +89,17 @@ function Task() {
         <h2>{id? 'Editando' : 'Novo Tarefa'}</h2>
         <input placeholder="Titulo da Tarefa" value={title} onChange={e => setTitle(e.target.value)} required/>
         <input placeholder="Descricao" value={description} onChange={e => setDesciption(e.target.value)} required/>
-
-
+        <select value={userId} onChange={(e) => setUserId(Number(e.target.value))}>
+        <option value="">Selecione um usuário</option>
+        {users.map(user => (
+          <option key={user.id} value={user.id}>
+            {user.name} / {user.email}
+          </option>
+        ))}
+      </select>
+      
+      <p>Usuário selecionado: {userId}</p>
+   
         <button type="submit">{id ? 'Salvar' : 'Cadastrar'}</button>
         {id && <button onClick={clear} type="button">Cancelar</button>}
         </form>
@@ -82,10 +107,10 @@ function Task() {
         {tasks.map(u => (
           <div key={u.id}>
             <div>
-              <strong>{u.title}</strong>
+              <h2>{u.title}</h2>
               <p>{u.description}</p>
             </div>
-            <button onClick={() => deletar(u.id)}>Apagar</button>
+            <button onClick={() => deletar(u.id)}>Apagar Tarefa</button>
             <button onClick={() => edition(u)}>Editar</button>
           </div>
         ))}
