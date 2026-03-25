@@ -12,6 +12,6 @@ export class CreateUserDto {
     @IsBoolean()
     isActive:boolean;
     
-
+    password:string;
 
 }
