@@ -1,11 +1,12 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Task } from "src/tasks/entities/task.entity";
+import { UUID } from "typeorm/driver/mongodb/bson.typings.js";
 
 @Entity()
 export class User {
   
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
   
   @Column()
   name: string;
@@ -16,7 +17,7 @@ export class User {
   @Column({select: false})
   password:string;
   
-  @Column()
+  @Column({default: true})
   isActive: boolean;
   
   @CreateDateColumn()

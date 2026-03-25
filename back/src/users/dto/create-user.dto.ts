@@ -12,6 +12,7 @@ export class CreateUserDto {
     @IsBoolean()
     isActive:boolean;
     
+    @IsString()
     password:string;
 
 }

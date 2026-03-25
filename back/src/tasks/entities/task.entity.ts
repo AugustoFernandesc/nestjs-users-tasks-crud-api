@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, ForeignKey, DeleteDateColumn } from "typeorm";
-import { User } from "../../users/entities/user.entity"; // Importe o User
+import { User } from "src/users/entities/user.entity";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, DeleteDateColumn } from "typeorm";
+
 
 @Entity()
 export class Task {
@@ -15,8 +16,8 @@ export class Task {
     @Column({ default: false })
     completed: boolean;
 
-    @Column()
-    userId: number;
+    @Column({nullable: true})
+    userId: string;
 
     @CreateDateColumn()
     createdAt: Date;

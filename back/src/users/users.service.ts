@@ -43,7 +43,7 @@ export class UsersService {
     return await this.usersRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const user = await this.usersRepository.findOneBy({ id });
     
     if (!user) {
@@ -53,14 +53,14 @@ export class UsersService {
      return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     await this.findOne(id); 
     
     await this.usersRepository.update(id, updateUserDto);
     return this.findOne(id);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const user = await this.findOne(id);
     
     await this.usersRepository.softDelete(id);

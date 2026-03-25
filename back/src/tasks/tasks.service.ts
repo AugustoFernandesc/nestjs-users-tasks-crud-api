@@ -18,7 +18,7 @@ export class TasksService {
 
   //alterado
   async create(createTaskDto: CreateTaskDto) {
-    const user = await this.userRepository.findOne({where:{id: createTaskDto.userId}});
+    const user = await this.userRepository.findOneBy({id: createTaskDto.userId});
     if(!user){
       throw new NotFoundException(`Usuario nao encontrado`)
     }

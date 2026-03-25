@@ -12,7 +12,7 @@ export class CreateTaskDto {
     @IsBoolean()
     completed: boolean;
     
-    @IsNumber()
-    userId: number
+    @IsUUID() 
+    userId: string
 
 }
