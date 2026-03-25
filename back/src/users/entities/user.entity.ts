@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Task } from "src/tasks/entities/task.entity";
-import { UUID } from "typeorm/driver/mongodb/bson.typings.js";
+import { Exclude } from "class-transformer";
 
 @Entity()
 export class User {
@@ -14,7 +14,8 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({select: false})
+
+  @Column({select:false})
   password:string;
   
   @Column({default: true})

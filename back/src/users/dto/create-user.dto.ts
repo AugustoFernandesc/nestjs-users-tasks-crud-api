@@ -1,5 +1,4 @@
 import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsString } from "class-validator";
-import { Timestamp } from "typeorm";
 
 export class CreateUserDto {
 
@@ -12,7 +11,7 @@ export class CreateUserDto {
     @IsBoolean()
     isActive:boolean;
     
-    @IsString()
+    @IsString() 
     password:string;
 
 }
