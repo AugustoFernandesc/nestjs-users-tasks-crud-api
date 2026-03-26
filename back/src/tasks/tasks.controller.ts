@@ -2,34 +2,39 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards } fro
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt.auth.guard'; 
 
-@UseGuards(AuthGuard)
-
+// Aplica a proteção JWT em todas as rotas deste controller [
+@UseGuards(JwtAuthGuard)
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
+  // Criação de tarefa: permitida apenas para usuários autenticados 
   @Post()
   create(@Body() createTaskDto: CreateTaskDto) {
     return this.tasksService.create(createTaskDto);
   }
 
+  // Listagem de todas as tarefas protegida por Guard 
   @Get()
   findAll() {
     return this.tasksService.findAll();
   }
 
+  // Busca de tarefa específica com conversão de ID para número
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tasksService.findOne(+id);
   }
 
+  // Atualização de tarefa protegida por autenticação 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.tasksService.update(+id, updateTaskDto);
   }
 
+  // Remoção de tarefa protegida por autenticação 
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.tasksService.remove(+id);

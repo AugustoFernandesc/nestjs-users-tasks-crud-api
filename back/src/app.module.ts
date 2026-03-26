@@ -7,7 +7,10 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}), 
+    // Carrega variáveis de ambiente (.env) de forma global para todo o projeto 
+    ConfigModule.forRoot({ isGlobal: true }), 
+    
+    // Configuração da conexão com o banco de dados PostgreSQL 
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -15,10 +18,15 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      autoLoadEntities: true,
-      synchronize: true,
+      autoLoadEntities: true, // Carrega as entidades automaticamente sem precisar listá-las
+      synchronize: true, // Sincroniza as tabelas com as entidades (usar apenas em dev)
     }),
-    UsersModule, TasksModule, AuthModule],
+
+    // Importação dos módulos da aplicação 
+    UsersModule, 
+    TasksModule, 
+    AuthModule
+  ],
   controllers: [],
   providers: [],
 })

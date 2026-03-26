@@ -6,20 +6,36 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { UsersModule } from 'src/users/users.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './jwt.strategy';
+import { LocalStrategy } from './local.strategy';
 
 @Module({
   imports: [
+    // Habilita o uso do Passport para autenticação Local e JWT
+    PassportModule,
+    
+    // Permite que o AuthModule acesse a tabela de Usuários no banco
     TypeOrmModule.forFeature([User]),
+    
+    // Configura o JWT de forma assíncrona usando variáveis do .env
     JwtModule.registerAsync({
       global: true,
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET_ACCESS'),
-        signOptions: {expiresIn: Number(configService.get<string>('JWT_EXPIRES_IN'))} 
+        signOptions: { 
+          expiresIn: Number(configService.get<string>('JWT_EXPIRES_IN')) 
+        } 
       }),
       inject: [ConfigService],
     }),
-    UsersModule],
+    
+    // Importa o módulo de usuários para validar credenciais no login
+    UsersModule
+  ],
   controllers: [AuthController],
-  providers: [AuthService],
+  
+  // Registra os serviços e as estratégias (Local e JWT) como provedores
+  providers: [AuthService, JwtStrategy, LocalStrategy],
 })
 export class AuthModule {}

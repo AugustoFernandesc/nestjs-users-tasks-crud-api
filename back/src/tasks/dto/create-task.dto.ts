@@ -1,18 +1,22 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString, IsUUID } from "class-validator";
-
+import { IsBoolean, IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export class CreateTaskDto {
     
-    @IsString() @IsNotEmpty()
+    // Valida se o título é uma string e se não foi enviado vazio
+    @IsString() 
+    @IsNotEmpty()
     title: string;
     
-    @IsNotEmpty() @IsString()
+    // Valida se a descrição é uma string e se não foi enviada vazia
+    @IsNotEmpty() 
+    @IsString()
     description: string;
     
+    // Valida se o status da tarefa (concluída ou não) é um booleano
     @IsBoolean()
     completed: boolean;
     
+    // Valida se o ID do usuário dono da tarefa é um UUID válido (Chave Estrangeira)
     @IsUUID() 
-    userId: string
-
+    userId: string;
 }

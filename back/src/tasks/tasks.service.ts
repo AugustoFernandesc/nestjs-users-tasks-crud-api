@@ -16,48 +16,48 @@ export class TasksService {
     private readonly userRepository: Repository<User>
   ){}
 
-  //alterado
   async create(createTaskDto: CreateTaskDto) {
+    // Valida se o usuário informado no DTO realmente existe no banco [cite: 34]
     const user = await this.userRepository.findOneBy({id: createTaskDto.userId});
     if(!user){
       throw new NotFoundException(`Usuario nao encontrado`)
     }
+    
+    // Cria a tarefa vinculando-a ao objeto usuário encontrado (Relacionamento) 
     const newTask = this.taskRepository.create({...createTaskDto, user});
     await this.taskRepository.save(newTask);
-    return `Tarefa '${createTaskDto.title}'selecionada com sucesso`;
+    return `Tarefa '${createTaskDto.title}' selecionada com sucesso`;
   }
 
   async findAll() {
+    // Retorna todas as tarefas incluindo os dados do usuário dono (Eager Loading)
     return await this.taskRepository.find({relations: ["user"]});
   }
 
   async findOne(id: number) {
+    // Busca uma tarefa específica e traz os dados do relacionamento com usuário
     const task = await this.taskRepository.findOne({where: {id}, relations: ["user"]});
     if(!task){
       throw new NotFoundException('Task nao encontrada')
-    }else{
-      return task;
     }
+    return task;
   }
 
   async update(id: number, updateTaskDto: UpdateTaskDto) {
+    // Verifica existência da tarefa antes de aplicar a atualização
     const task = await this.taskRepository.findOneBy({id});
     if(!task){
       throw new NotFoundException(`Task com ID ${id} nao encontrado`)
-    }else{
-      await this.taskRepository.update(id, updateTaskDto);
-      return this.findOne(id);
     }
     
+    await this.taskRepository.update(id, updateTaskDto);
+    return this.findOne(id);
   }
 
   async remove(id: number) {
+    // Realiza a exclusão lógica (soft delete) para manter integridade dos dados
     const task = await this.findOne(id);
-    if(!task){
-        throw new NotFoundException(`Task com ID ${id} nao encontrado`)
-    }else{
-      await this.taskRepository.softDelete(id);
-      return {message: `Task com titulo: '${task.title}' exlcuida`}
-    }
+    await this.taskRepository.softDelete(id);
+    return {message: `Task com titulo: '${task.title}' excluida`}
   }
 }
