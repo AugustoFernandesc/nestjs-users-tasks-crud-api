@@ -12,23 +12,28 @@ interface User{
 
 
 function Users() {
+
   const [users, setUsers] = useState<User[]> ([]);
-  const [id, setId] = useState<number | null> (null);
+  const [id, setId] = useState<number | null> (null); 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [createdAt, setCreatedAt] = useState(new Date())
 
-
+ 
   async function getUser(){
+    try{
     const res = await api.get('/users');
     setUsers(res.data);
+    }catch (err){
+      console.error('Erro ao buscar usuarios', err)
+    }
   }
   
   useEffect(()=> {getUser()}, []);
-
-  async function updateUser(u: React.FormEvent<HTMLFormElement>){
+  
+  async function save(u: React.FormEvent<HTMLFormElement>){
       u.preventDefault();
       const dados = {name, email, password, isActive, createdAt};
       if(id){
@@ -66,12 +71,12 @@ function Users() {
 
     
   return(
-    <div>
-      <form onSubmit={updateUser}>
+    <div className='formulary'>
+      <form className= 'formulary' onSubmit={save}>
         <h2>{id? 'Editando' : 'Novo usuario'}</h2>
-        <input placeholder="Nome" value={name} onChange={e => setName(e.target.value)} required/>
-        <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required/>
-        <input placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} required/>
+        <input type='text' placeholder="Nome" value={name} onChange={e => setName(e.target.value)} required/>
+        <input type='email' placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required/>
+        <input type='password' placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} required/>
 
         <button type="submit">{id ? 'Salvar' : 'Cadastrar'}</button>
         {id && <button onClick={clear} type="button">Cancelar</button>}

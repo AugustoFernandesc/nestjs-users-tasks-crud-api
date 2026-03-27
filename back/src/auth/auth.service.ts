@@ -32,9 +32,9 @@ export class AuthService {
     const payload = { sub: user.id, email: user.email };
 
     // Assina o token usando a chave secreta vinda das variáveis de ambiente
-    const token = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get<string>('JWT_SECRET_ACCESS'),
-    });
+    const token = await this.jwtService.signAsync(payload, 
+      //secret: this.configService.get<string>('JWT_SECRET_ACCESS'),
+    );
 
     // Retorna o token com a chave 'access_token'
     return { 
