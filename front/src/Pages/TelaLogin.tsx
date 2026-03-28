@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { api } from "../Services/api";
-import "../Styles/Loginstyles.css"
+import "../Styles/LoginStyles.css"
 import { useNavigate } from "react-router-dom";
 
 {/* Componente de autenticacao
@@ -45,38 +45,39 @@ function TelaLogin() {
 
 return (
     <>
-        <main className="container">
+        <div className="login-page">
+            <main className="container">
 
-            {/* o envento onSubmit centraliza a logica de envio no formulario */}
-            <form onSubmit={Login}> 
-                <h1>Login</h1>
-                <div className="input-box">
-                    <input 
-                        type="email" 
-                        placeholder="Email"  
-                        value={email} 
+                {/* o envento onSubmit centraliza a logica de envio no formulario */}
+                <form onSubmit={Login}> 
+                    <h1>Login</h1>
+                    <div className="input-box">
+                        <input 
+                            type="email" 
+                            placeholder="Email"  
+                            value={email} 
 
-                        // atualiza o estado conforme o usuario digita
-                        onChange={e => setEmail(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div className="input-box">
-                    <input 
-                        type="password" 
-                        placeholder="Senha"  
-                        value={password} 
-                        onChange={e => setPassword(e.target.value)} 
-                        required 
-                    />
-                </div>
+                            // atualiza o estado conforme o usuario digita
+                            onChange={e => setEmail(e.target.value)} 
+                            required 
+                        />
+                    </div>
+                    <div className="input-box">
+                        <input 
+                            type="password" 
+                            placeholder="Senha"  
+                            value={password}
+                            onChange={e => setPassword(e.target.value)} 
+                            required 
+                        />
+                    </div>
 
-                    {/* botao do tipo submit que dispara a funcao login */}
-                    <button type="submit">Entrar</button>
-            </form>
+                        {/* botao do tipo submit que dispara a funcao login */}
+                        <button type="submit">Entrar</button>
+                </form>
 
-        </main>
-
+            </main>
+        </div>
     </>
     );
 
