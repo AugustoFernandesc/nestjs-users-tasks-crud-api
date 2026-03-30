@@ -1,7 +1,9 @@
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import User from "./Pages/User";
-import Task from "./Pages/Task";
-import TelaLogin from "./Pages/TelaLogin";
+import User from "../Pages/User";
+import Task from "../Pages/Task";
+import TelaLogin from "../Pages/TelaLogin";
+import Layout from "./Layout";
+import Home from "../Pages/Home";
 
 /* componente de protecao de rota
  * responsavel por interceptar o acesso as telas internas no sistema
@@ -27,8 +29,11 @@ function App() {
 
             {/* grupo de rotas protegidas: exige que o PrivateRoute valide o token */}
             <Route element={<PrivateRoute />}>
-                <Route path="/user" element={<User />} />
-                <Route path="/task" element={<Task />} />
+                <Route element={<Layout/>}>
+                    <Route path="/home" element={<Home/>} />
+                    <Route path="/user" element={<User />} />
+                    <Route path="/task" element={<Task />} />
+                </Route>
             </Route>
             
             {/* rota fallback: redireciona qualquer url invalida de volta para o inicio */}

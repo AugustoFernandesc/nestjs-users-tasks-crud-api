@@ -1,8 +1,97 @@
-.excluir{
-    color: red;
-    background-color: rgb(255, 255, 255);
-    display: inline-block;
-    justify-content: center;
+.title-user{
+    font-family: Arial, sans-serif;
+    color: #333;
+    top: 60px;
+    left: 290px;
+    padding: 10px 50px;
+    display: flex;
     align-items: center;
     gap: 10px;
 }
+
+
+.div-user {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+    margin-right: 20px;
+}
+
+.acoes{
+    display: flex;   
+    gap: 15px;    
+    justify-content: flex-start; 
+    align-items: center;
+    padding: 15px;
+}
+
+.acoes img {
+    width: 20px;          
+    height: 20px;
+}
+
+.acoes svg {             
+    font-size: 20px;
+}
+
+.editar, .excluir {
+    background: none;  
+    border: none;       
+    cursor: pointer;    
+    padding: 0px;
+    display: flex;
+    align-items: center;    
+}
+
+
+.button-add-user{
+    display: flex;
+    margin: 110px 0px 15px 885px;
+    padding: 10px 50px;
+    background-color:#3572f7;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
+}
+
+
+.table-user {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cabecalho-tabela{
+    border-bottom: 1px solid  #f1eeee;
+    background-color: #ffffff;
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 15px;
+    font-weight: bold;
+    text-align: left;
+    
+}
+td{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.linha-tabela td {
+    padding: 15px;
+    border-bottom: 1px solid #f8f8f8;
+}
+
+.linha-tabela:hover {
+    background-color: #cac5c5; 
+}
+
+
+
+
+
+
+
+

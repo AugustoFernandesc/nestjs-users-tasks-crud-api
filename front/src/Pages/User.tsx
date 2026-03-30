@@ -1,6 +1,12 @@
 import { useEffect, useState} from 'react'
 import { api } from '../Services/api';
 import '../Styles/UserStyles.css';
+import Modal from '../Global/ModalUser'
+import '../Styles/Layout.css';
+import del from '../Assets/delete.png';
+import { FaList } from 'react-icons/fa';
+import { HiPencil } from 'react-icons/hi';
+
 
 interface User{
     id:number;
@@ -22,8 +28,17 @@ function Users() {
   const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [createdAt, setCreatedAt] = useState(new Date())
+  const [modalIsOpen, setIsOpen] =  useState(false);
 
- 
+  function openModal(){
+    setIsOpen(true)
+  }
+
+  function closeModal(){
+    setIsOpen(false);
+    clear();
+  };
+
   async function getUser(){
     try{
     const res = await api.get('/users');
@@ -44,6 +59,7 @@ function Users() {
         await api.post('/users', dados);
       }
 
+      closeModal()
       clear()
       getUser()
   }
@@ -54,6 +70,7 @@ function Users() {
     setPerfil(e.perfil);
     setEmail(e.email);
     setIsActive(e.isActive);
+    openModal();
   }
 
    function clear() {
@@ -73,54 +90,51 @@ function Users() {
 
 
     
-  return(
-    <>    
-      <div className='formulary'>
-        <form className= 'formulary' onSubmit={save}>
-          <h2>{id? 'Editando' : 'Novo usuario'}</h2>
-          <input type='text' placeholder="Nome" value={name} onChange={e => setName(e.target.value)} required/>
-          <input type='email' placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required/>
-          <select value={perfil} onChange={e => setPerfil(e.target.value)} required>
-            <option>Selecione...</option>
-            <option>ADIMIN</option>
-            <option>USUARIO</option>
-          </select>
-          <input type='password' placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} required/>
+      return (
+            <>   
+              <div className="header-container">
+                <h2 className='title-user'>Usuários <FaList/></h2>
+                <button className="button-add-user" onClick={openModal}>Adicionar</button>
+              </div>
 
-          <button type="submit">{id ? 'Salvar' : 'Cadastrar'}</button>
-          {id && <button onClick={clear} type="button">Cancelar</button>}
-        </form>
-    </div>
-    
-    <div>
-        <table>
-          <thead>
-              <tr> 
-                <th>USUARIO</th>
-                <th>LOGIN</th>
-                <th>PERFIL</th>
-              </tr>
-          </thead>
-          <tbody>
-            {users.map(u => (
-              <tr key={u.id}>
-                <td>{u.name}</td>
-                <td>{u.email}</td>
-                <td>{u.perfil ? u.perfil : 'USUARIO'}</td>
-                <td className='acoes'>
-                  <button className='editar' onClick={() => edition(u)}>Editar</button>
-                  <button className='excluir' onClick={() => deletar(u.id)}>X</button>
-                </td>
-
-              </tr>
+              <Modal
+                isOpen={modalIsOpen} 
+                closeModal={closeModal}
+                save={save}
+                name={name} setName={setName}
+                email={email} setEmail={setEmail}
+                perfil={perfil} setPerfil={setPerfil}
+                password={password} setPassword={setPassword}
+                id={id}
+              />
               
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
-     
-  )
+              <div className='div-user'>
+                <table className='table-user'>
+                  <thead>
+                    <tr className='linha-tabela'> 
+                      <th className='cabecalho-tabela'>Usuário</th>
+                      <th className='cabecalho-tabela'>Login</th>
+                      <th className='cabecalho-tabela'>Perfil</th>
+                      <th className='cabecalho-tabela'>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map(u => (
+                      <tr className='linha-tabela' key={u.id}>
+                        <td>{u.name}</td>
+                        <td>{u.email}</td>
+                        <td>{u.perfil ? u.perfil : 'USUARIO'}</td>
+                        <td className='acoes'>
+                          <button className='editar' onClick={() => edition(u)}><HiPencil/></button>
+                          <button className='excluir' onClick={() => deletar(u.id)}><img src={del} alt="excluir" /></button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+      )
 }
 
 
