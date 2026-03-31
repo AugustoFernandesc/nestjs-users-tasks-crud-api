@@ -2,23 +2,48 @@ import { Outlet, Link, useNavigate } from 'react-router-dom'
 import '../Styles/Layout.css'
 import { IoExit, IoHomeSharp } from 'react-icons/io5'
 import { FaTasks, FaUser } from 'react-icons/fa'
+import Swal from 'sweetalert2';
+import logo from '../Assets/logo.png'
 
 export default function Layout(){
 
     const navigate = useNavigate();
 
-    function sair(){
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        navigate('/')
+    async function sair(){
+        const result = await Swal.fire({
+        title: "Deseja Sair?",
+        icon: 'warning',
+        iconColor: "red",
+        confirmButtonText: "Sim, Sair!",
+        confirmButtonColor: "#46d66a",
+        showCancelButton: true,
+        cancelButtonColor: "#181a18",
+        reverseButtons: true,
+        customClass:{title: 'h2-user-task'}
+        })
+        
+        if(result.isConfirmed){
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            navigate('/')
+        }else{
+            Swal.fire({
+                title: "Operacao Cancelada",
+                icon: "error",
+                iconColor: "#ff0707",
+                confirmButtonColor: "#46d66a",
+                customClass:{title: 'h2-user-task'}
+            })
+        }
     }
 
     return(
     <>
         <div className="layout-container">
             <aside className='sidebar'>
-                <h2 className='title'>MG CODE</h2>
+                <img src={logo} />
                 <nav className='nav-container'>
+                <div className='border-button'></div>
    
                     <Link to='/home' className='button-layout'>
                         <span>Home</span>

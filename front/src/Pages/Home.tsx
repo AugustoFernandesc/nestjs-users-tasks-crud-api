@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../Services/api";
 import { FaTasks } from 'react-icons/fa';
-import '../Styles/UserStyles.css';
+import '../Styles/HomeStyles.css'; 
 
 interface Task {
     id: number;
@@ -28,11 +28,12 @@ export default function Home() {
         getMyTasks();
     }, []);
 
+  
+
     return (
-        <div className="div-user">
-            <h2 className='title-user'>Minhas Tarefas Recentes <FaTasks /></h2>
-            
-            <div className="tasks-container-home">
+        <div className="home-page-container">
+            <h1 className='home-title'>Minhas Tarefas Recentes <FaTasks /></h1>
+            <div className="tasks-grid-home">
                 {tasks.length > 0 ? (
                     tasks.map(t => (
                         <div key={t.id} className="task-card-home">
@@ -42,7 +43,9 @@ export default function Home() {
                         </div>
                     ))
                 ) : (
-                    <p>Você não possui tarefas vinculadas no momento. [cite: 44]</p>
+                    <div className="no-tasks-message">
+                        <p>Você não possui tarefas vinculadas no momento</p>
+                    </div>
                 )}
             </div>
         </div>

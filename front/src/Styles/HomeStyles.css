@@ -1,0 +1,55 @@
+.home-page-container {
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.home-title {
+    font-family: Arial, sans-serif;
+    color: #333;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+}
+
+.tasks-grid-home {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.task-card-home {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-left: 6px solid #3572f7; 
+    transition: transform 0.3s ease;
+}
+
+.task-card-home:hover {
+    transform: translateY(-5px); 
+}
+
+.task-card-home p {
+    font-family: Arial, sans-serif;
+    margin: 8px 0;
+    color: #444;
+    line-height: 1.5;
+}
+
+.task-card-home strong {
+    color: #181a18;
+}
+
+.no-tasks-message {
+    font-family: Arial, sans-serif;
+    color: #888;
+    background: #eee;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
