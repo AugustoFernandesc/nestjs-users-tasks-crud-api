@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class CreateTaskDto {
     
@@ -17,6 +17,6 @@ export class CreateTaskDto {
     completed: boolean;
     
     // Valida se o ID do usuário dono da tarefa é um UUID válido (Chave Estrangeira)
-    @IsUUID() 
+    @IsOptional() 
     userId: string;
 }

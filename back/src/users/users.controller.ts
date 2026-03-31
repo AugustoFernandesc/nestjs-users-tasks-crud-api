@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -19,6 +19,14 @@ export class UsersController {
   @Get()
   findAll() {
     return this.usersService.findAll();
+  }
+
+  // Busca de tarefa por Nome
+  //Implementei pro front fica com essa busca por nome
+  @UseGuards(JwtAuthGuard)
+  @Get('search')
+  async search(@Query('nome') nome: string) {
+  return this.usersService.findByName(nome);
   }
 
   // Busca de usuário por ID protegida por Guard 

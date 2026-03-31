@@ -3,7 +3,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './entities/task.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
@@ -29,9 +29,14 @@ export class TasksService {
     return `Tarefa '${createTaskDto.title}' selecionada com sucesso`;
   }
 
-  async findAll() {
+  async findAll(userId: string) {
     // Retorna todas as tarefas incluindo os dados do usuário dono (Eager Loading)
-    return await this.taskRepository.find({relations: ["user"]});
+    return await this.taskRepository.find({where: {userId: userId}, relations: ["user"]});
+  }
+
+  //busca tarefa por titulo, para filtrar somente a tarefa que eu preciso
+  async findByTitle(title:string, userId:string){
+    return await this.taskRepository.find({where: {title: ILike(`%${title}%`), userId: userId}})
   }
 
   async findOne(id: number) {

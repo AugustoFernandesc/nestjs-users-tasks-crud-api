@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { api } from "../Services/api";
 import ModalTask from "../Global/ModalTask";
 import { FaList } from 'react-icons/fa';
-import '../Styles/UserStyles.css';
+import '../Styles/TaskStyles.css';
+import { HiPencil } from "react-icons/hi";
+import del from '../Assets/delete.png'
+import Swal from "sweetalert2";
 
 interface Task {
     id: number;
@@ -20,6 +23,7 @@ function TaskPage() {
     const [description, setDescription] = useState("");
     const [completed, setCompleted] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [busca, setBusca] = useState("");
 
     function openModal() { setIsOpen(true); }
 
@@ -39,7 +43,7 @@ function TaskPage() {
 
     async function save(u: React.FormEvent<HTMLFormElement>) {
         u.preventDefault();
-        const dados = { title, description, completed, userId: 1 };
+        const dados = { title, description, completed};
         if (id) {
             await api.put(`/tasks/${id}`, dados);
         } else {
@@ -65,15 +69,69 @@ function TaskPage() {
     }
 
     async function deletar(id: number) {
-        await api.delete(`/tasks/${id}`);
-        getTask();
+      
+      const result = await Swal.fire({
+          title: "Tem Certeza?",
+          icon: 'warning',
+          iconColor: "red",
+          confirmButtonText: "Sim, deletar!",
+          confirmButtonColor: "#46d66a",
+          showCancelButton: true,
+          cancelButtonColor: "#181a18",
+          reverseButtons: true,
+          customClass:{title: 'h2-user-task'}
+          })
+          
+        if(result.isConfirmed){
+          await api.delete(`/tasks/${id}`);
+          getTask();
+          Swal.fire({ 
+            title: "Deletado!", 
+            icon: "success", 
+            iconColor: "#46d66a", 
+            confirmButtonColor: "#46d66a", 
+            customClass:{title: "h2-user-task"}
+          });
+        }else{
+          Swal.fire({
+            title: "Operacao Cancelada",
+            icon: "error",
+            iconColor: "#ff0707",
+            confirmButtonColor: "#46d66a",
+            customClass:{title: 'h2-user-task'}
+          })
+          
+        }
     }
+
+      async function buscarTarefa(b:React.FormEvent<HTMLFormElement>) {
+        b.preventDefault()
+        const res = await api.get(`/tasks/search?title=${busca}`);
+        setTasks(res.data);
+      }
+
+      function LimparBusca(){
+        setBusca("");
+      }
 
     return (
         <>
-            <div className="header-container">
-                <h2 className='title-user'>Tarefas <FaList /></h2>
-                <button className="button-add-user" onClick={openModal}>Adicionar</button>
+            <h2 className='title-tasks'>Tarefas <FaList /></h2>
+            <div className="header-tasks">
+
+                <form className="search-container-tasks" onSubmit={buscarTarefa}>
+                    <input 
+                        className="input-search-tasks"
+                        type="search" 
+                        placeholder="Pesquisar tarefa..."
+                        value={busca}
+                        onChange={(e) => setBusca(e.target.value)}
+                    />
+                    <button className="button-search-tasks" onClick={LimparBusca}>Limpar</button>
+                    <button className="button-search-tasks" type="submit">Buscar</button>
+                </form>
+
+                <button className="button-add-tasks" onClick={openModal}>Adicionar</button>
             </div>
 
             <ModalTask
@@ -85,23 +143,25 @@ function TaskPage() {
                 id={id}
             />
 
-            <div className='div-user'>
-                <table className='table-user'>
+            <div className='div-tasks'>
+                <table className='table-tasks'>
                     <thead>
-                        <tr className='linha-tabela'>
-                            <th className='cabecalho-tabela'>Título</th>
-                            <th className='cabecalho-tabela'>Descrição</th>
-                            <th className='cabecalho-tabela'>Ações</th>
+                        <tr className='linha-tabela-tasks'>
+                            <th className='cabecalho-tabela-tasks'>Título</th>
+                            <th className='cabecalho-tabela-tasks'>Descrição</th>
+                            <th className="cabecalho-tabela-tasks">Situação</th>
+                            <th className='cabecalho-tabela-tasks'>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {tasks.map(t => (
-                            <tr className='linha-tabela' key={t.id}>
+                            <tr className='linha-tabela-tasks' key={t.id}>
                                 <td>{t.title}</td>
                                 <td>{t.description}</td>
-                                <td className='acoes'>
-                                    <button className='editar' onClick={() => edition(t)}>Editar</button>
-                                    <button className='excluir' onClick={() => deletar(t.id)}>Excluir</button>
+                                <td>{t.completed ? "Realizada" : " A Realizar"}</td>
+                                <td className='acoes-tasks'>
+                                    <button className='editar-tasks' onClick={() => edition(t)}><HiPencil/></button>
+                                    <button className='excluir-tasks' onClick={() => deletar(t.id)}><img src={del} alt="excluir" /></button>
                                 </td>
                             </tr>
                         ))}

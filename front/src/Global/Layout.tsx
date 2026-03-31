@@ -1,9 +1,17 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, useNavigate } from 'react-router-dom'
 import '../Styles/Layout.css'
 import { IoExit, IoHomeSharp } from 'react-icons/io5'
 import { FaTasks, FaUser } from 'react-icons/fa'
 
 export default function Layout(){
+
+    const navigate = useNavigate();
+
+    function sair(){
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        navigate('/')
+    }
 
     return(
     <>
@@ -26,11 +34,10 @@ export default function Layout(){
                         <span>Tarefas</span>
                         <FaTasks/>
                     </Link>
-
-                    <Link to='/' className='button-layout logout'>
+                    <div onClick={sair} className='button-layout logout' style={{ cursor: 'pointer' }}>
                         <span>Sair</span>
                         <IoExit/>
-                    </Link>
+                    </div>
                 </nav>
             </aside>
             <main className='content'>

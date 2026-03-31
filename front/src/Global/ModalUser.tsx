@@ -34,8 +34,9 @@ export default function Modal({
                         <option value="USUARIO">USUARIO</option>
                     </select>
                     <input className='input-form' type='email' placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required/>
-                    <input className='input-form' type='password' placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} required/>
-                    
+                    {!id && (
+                        <input className='input-form' type='password' placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} required/>
+                    )}
                     <div className='button-inf-direita'>
                         <button className="button-cancelar" onClick={closeModal} type="button">Cancelar</button>
                         <button className="button-salvar" type="submit">{id ? 'Salvar' : 'Salvar'}</button>

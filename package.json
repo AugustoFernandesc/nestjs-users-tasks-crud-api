@@ -3,6 +3,7 @@
     "@nestjs/jwt": "^11.0.2",
     "axios": "^1.13.6",
     "bcrypt": "^6.0.0",
+    "sweetalert2": "^11.26.24",
     "uuid": "^13.0.0"
   },
   "devDependencies": {

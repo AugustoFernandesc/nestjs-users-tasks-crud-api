@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'; 
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -45,6 +45,11 @@ export class UsersService {
       return null;
     }
     return userFound;
+  }
+
+  //busca usuario por nome, para filtrar somente o usuario que eu preciso
+  async findByName(name:string){
+    return await this.usersRepository.find({where: {name: ILike(`%${name}%`)}})
   }
 
   async findAll() {

@@ -21,6 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   // Método chamado após o token ser validado; extrai os dados (payload) do JWT
   async validate(payload: any) {
     // Retorna os dados do usuário que ficarão disponíveis em 'req.user' nas rotas protegidas
-    return { userId: payload.sub, email: payload.email };
+    return { id: payload.sub, email: payload.email };
   }
 } 

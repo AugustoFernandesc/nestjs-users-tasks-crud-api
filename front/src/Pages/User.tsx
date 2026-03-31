@@ -6,6 +6,7 @@ import '../Styles/Layout.css';
 import del from '../Assets/delete.png';
 import { FaList } from 'react-icons/fa';
 import { HiPencil } from 'react-icons/hi';
+import Swal from 'sweetalert2';
 
 
 interface User{
@@ -29,6 +30,7 @@ function Users() {
   const [isActive, setIsActive] = useState(true);
   const [createdAt, setCreatedAt] = useState(new Date())
   const [modalIsOpen, setIsOpen] =  useState(false);
+  const [busca, setBusca] = useState("");
 
   function openModal(){
     setIsOpen(true)
@@ -69,7 +71,6 @@ function Users() {
     setName(e.name);
     setPerfil(e.perfil);
     setEmail(e.email);
-    setIsActive(e.isActive);
     openModal();
   }
 
@@ -83,17 +84,68 @@ function Users() {
   }
 
   async function deletar(id:number) {
-    await api.delete(`/users/${id}`)
-    getUser();
+    const result = await Swal.fire({
+      title: "Tem Certeza?",
+      icon: 'warning',
+      iconColor: "red",
+      confirmButtonText: "Sim, deletar!",
+      confirmButtonColor: "#46d66a",
+      showCancelButton: true,
+      cancelButtonColor: "#181a18",
+      reverseButtons: true,
+      customClass:{title: 'h2-user-task'}
+    })
+
+    if(result.isConfirmed){
+      await api.delete(`/users/${id}`)
+      getUser();
+      Swal.fire({ 
+        title: "Usuario Deletado!", 
+        icon: "success", 
+        iconColor: "#46d66a", 
+        confirmButtonColor: "#46d66a", 
+        customClass:{title: "h2-user-task"}
+      });
+
+    }else{
+        Swal.fire({
+          title: "Operacao Cancelada",
+          icon: "error",
+          iconColor: "#ff0707",
+          confirmButtonColor: "#46d66a",
+          customClass:{title: 'h2-user-task'}
+        })
+    }
   }
 
 
+  async function buscarUsuario(b: React.FormEvent) {
+    b.preventDefault();
+    const res = await api.get(`/users/search?nome=${busca}`);
+    setUsers(res.data);
+  }
 
+  function LimparBusca(){
+    setBusca('');
+  }
     
       return (
-            <>   
+            <>  
+              
+              <h2 className='title-user'>Usuários <FaList/></h2>
               <div className="header-container">
-                <h2 className='title-user'>Usuários <FaList/></h2>
+                  <form className= "search-container" onSubmit={buscarUsuario}>
+                  <input 
+                    className="input-search"
+                    type="search" 
+                    placeholder="Pesquisar usuário..."
+                    value={busca}
+                    onChange={(e) => setBusca(e.target.value)}
+                    />
+                    <button className='button-search' onClick={LimparBusca}>Limpar</button>
+                    <button className="button-search" type="submit">Buscar</button>
+                </form>
+
                 <button className="button-add-user" onClick={openModal}>Adicionar</button>
               </div>
 
