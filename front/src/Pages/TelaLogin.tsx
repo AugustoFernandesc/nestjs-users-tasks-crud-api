@@ -34,11 +34,12 @@ function TelaLogin() {
 
                 // redireciona o usuario para a tela protegida de usuarios apos o sucesso
                 navigate('/user');
+
             }
         }catch(error){
 
             //tratamento de erro basico para falhas de autenticacao ou conexao
-            alert('falha no login! verifique seus dados')
+            alert('falha no login! verifique seus dados');
         }
 }
     

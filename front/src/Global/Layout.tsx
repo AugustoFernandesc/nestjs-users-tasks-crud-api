@@ -5,10 +5,14 @@ import { FaTasks, FaUser } from 'react-icons/fa'
 import Swal from 'sweetalert2';
 import logo from '../Assets/logo.png'
 
+// componente de Layout global
+// responsavel por estruturar a sidebar de navegacao e o container principa; (outlet)
 export default function Layout(){
 
     const navigate = useNavigate();
 
+    //gerencia o encerramento da sessao do usuario 
+    //remove os dados do localStorage e redireciona para a tela de login
     async function sair(){
         const result = await Swal.fire({
         title: "Deseja Sair?",
@@ -23,8 +27,12 @@ export default function Layout(){
         })
         
         if(result.isConfirmed){
+            
+            // limpa as credenciais de acesso para invalidar a sessao
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+
+            //redireciona para a tela de login
             navigate('/')
         }else{
             Swal.fire({
@@ -41,10 +49,12 @@ export default function Layout(){
     <>
         <div className="layout-container">
             <aside className='sidebar'>
+                {/* menu lateral de navegacao (sidebar) */}
                 <img src={logo} />
                 <nav className='nav-container'>
                 <div className='border-button'></div>
    
+                    {/* O uso do link garante a navegacao sem recarregar o browser (SPA) */}
                     <Link to='/home' className='button-layout'>
                         <span>Home</span>
                         <IoHomeSharp/>
@@ -59,12 +69,16 @@ export default function Layout(){
                         <span>Tarefas</span>
                         <FaTasks/>
                     </Link>
+                    
+                    {/* botao de logout com interacao */}
                     <div onClick={sair} className='button-layout logout' style={{ cursor: 'pointer' }}>
                         <span>Sair</span>
                         <IoExit/>
                     </div>
                 </nav>
             </aside>
+
+            {/* container dinamico que renderiza a rota filha selecionada */}
             <main className='content'>
                 <Outlet/>
             </main>
