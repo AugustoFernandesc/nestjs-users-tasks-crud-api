@@ -50,5 +50,7 @@ Bash
 cd front
 npm install
 npm run dev
-👨‍💻 Autor
+
+
+## 👨‍💻 Autor
 Desenvolvido por Augusto.
