@@ -40,3 +40,15 @@ Repositório do projeto **TaskFlow**, um ecossistema completo (Fullstack) para g
 ```bash
 git clone [https://github.com/AugustoFernandesc/TaskFlow.git](https://github.com/AugustoFernandesc/TaskFlow.git)
 cd TaskFlow
+2. Backend (NestJS)
+Bash
+cd back
+npm install
+npm run start:dev
+3. Frontend (React)
+Bash
+cd front
+npm install
+npm run dev
+👨‍💻 Autor
+Desenvolvido por Augusto.
